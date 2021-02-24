@@ -49,7 +49,9 @@ function pickNewImages() {
 
         const product = Picture.all[i];
 
-        if (product !== leftImageObject && product !== centerImageObject && product !== rightImageObject) {
+        if (product !== leftImageObject && product 
+                    !== centerImageObject && product 
+                    !== rightImageObject) {
             
             safeProducts.push(product);
 
@@ -88,7 +90,7 @@ function renderNewImages() {
         const temp = array[i]
         array[i] = array[j]
         array [j] = temp
-    }
+    } 
 }
 
 function imageClickHandler(event) {
@@ -163,7 +165,7 @@ function renderChart() {
       data: {
         labels: productNames,
         datasets: [{
-          label: 'My First dataset',
+          label: 'Most Popular Pictures',
           backgroundColor: 'rgb(255, 99, 132)',
           borderColor: 'rgb(255, 99, 132)',
   
