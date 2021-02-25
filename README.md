@@ -1,4 +1,5 @@
-## Lab 12- BusMall
-View results added to web page, ChartJS added with click count.
+## Lab 13- BusMall
+
+Implemented local storage as a formatted JSON string
 
 Created by Daniel Dills
