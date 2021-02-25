@@ -20,7 +20,7 @@ let centerImageObject = null;
 let rightImageObject = null;
 
 /* Constructor */
-function Picture (caption, url) {
+function Picture(caption, url) {
     this.caption = caption;
     this.url = url;
     this.clickCtr = 0;
@@ -32,12 +32,33 @@ function Picture (caption, url) {
 Picture.all = [];
 
 /* Function */
-function createProducts() {
+function createProductsFromScratch() {
     for (let i = 0; i < productNames.length; i++) {
         const productName = productNames[i];
         new Picture(productName, './imgs/' + productName + '.jpg');
     }
 }
+
+function createProductsFromStorage(storageGet) {
+    const javaScriptPics = JSON.parse(storageGet);
+
+    for (let i = 0; i < javaScriptPics.length; i++) {
+        const rawData = javaScriptPics[i];
+        const newPictureInstance = new Picture(rawData.caption, rawData.url);
+        newPictureInstance.clickCtr = rawData.clickCtr;
+        newPictureInstance.displayCtr = rawData.displayCtr;
+    }
+}
+
+function createPictureInstances() {
+    const storageGet = localStorage.getItem('pictures');
+    if (storageGet === null) {
+        createProductsFromScratch();
+    } else {
+        createProductsFromStorage(storageGet);
+    }
+}
+
 
 function pickNewImages() {
 
@@ -49,10 +70,10 @@ function pickNewImages() {
 
         const product = Picture.all[i];
 
-        if (product !== leftImageObject && product 
-                    !== centerImageObject && product 
-                    !== rightImageObject) {
-            
+        if (product !== leftImageObject && product
+            !== centerImageObject && product
+            !== rightImageObject) {
+
             safeProducts.push(product);
 
             if (safeProducts.length === 3) {
@@ -84,13 +105,13 @@ function renderNewImages() {
 /* fisher style shuffle
  https://medium.com/@nitinpatel_20236/how-to-shuffle-correctly-shuffle-an-array-in-javascript-15ea3f84bfb
 */
- function shuffle(array) {
-    for(let i = array.length -1; i > 0; i--) {
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * i)
         const temp = array[i]
         array[i] = array[j]
-        array [j] = temp
-    } 
+        array[j] = temp
+    }
 }
 
 function imageClickHandler(event) {
@@ -106,11 +127,11 @@ function imageClickHandler(event) {
             leftImageObject.clickCtr += 1;
             pickNewImages();
             renderNewImages();
-            totalClicks +=1;
+            totalClicks += 1;
             break;
 
         case centerImageElem.id:
-            centerImageObject.clickCtr +=1;
+            centerImageObject.clickCtr += 1;
             pickNewImages();
             renderNewImages();
             totalClicks += 1;
@@ -130,6 +151,10 @@ function imageClickHandler(event) {
     if (totalClicks === maxClicks) {
         allImagesElem.removeEventListener('click', imageClickHandler);
         alert('Please press the "View Results"')
+
+        const JSONPicture = JSON.stringify(Picture.all);
+        localStorage.setItem('pictures', JSONPicture);
+
         const resultsButton = document.getElementById('show-results');
         resultsButton.addEventListener('click', renderResults);
     }
@@ -144,49 +169,52 @@ function renderResults() {
         likesListElem.appendChild(itemProductElem);
         itemProductElem.textContent = itemProduct.caption + ' : ' + itemProduct.clickCtr + ' clicks out of ' + itemProduct.displayCtr + " views.";
     }
-  renderChart();
+    renderChart();
 }
 
 function renderChart() {
 
-    let tallyArray = []
+    const clicks = []
+    const displays = []
 
     for (let i = 0; i < Picture.all.length; i++) {
-        const productTally = Picture.all[i].clickCtr;
-        tallyArray.push(productTally);
+        const clickCount = Picture.all[i].clickCtr;
+        const displayCount = Picture.all[i].displayCtr;
+        clicks.push(clickCount);
+        displays.push(displayCount);
     }
 
     const ctx = document.getElementById('canvas').getContext('2d');
     const chart = new Chart(ctx, {
-      // The type of chart we want to create
-      type: 'horizontalBar',
-  
-      // The data for our dataset
-      data: {
-        labels: productNames,
-        datasets: [{
-          label: 'Most Popular Pictures',
-          backgroundColor: 'rgb(255, 99, 132)',
-          borderColor: 'rgb(255, 99, 132)',
-  
-          // TODO: get the "good" product data in here
-          data: tallyArray
+        type: 'horizontalBar',
+        data: {
+            labels: productNames,
+            datasets: [{
+                label: 'Most Clicked Pictures',
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: clicks,
+            },
+            {
+                label: 'Picture Views',
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: displays,
         }]
-      },
-  
-      // Configuration options go here
-      options: {}
+        },
+        options: {}
     });
-  }
+}
 
 
 allImagesElem.addEventListener('click', imageClickHandler);
 
-createProducts();
+createPictureInstances();
 
 pickNewImages();
 
 renderNewImages();
+
 
 
 
