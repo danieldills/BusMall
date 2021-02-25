@@ -190,13 +190,13 @@ function renderChart() {
         data: {
             labels: productNames,
             datasets: [{
-                label: 'Most Clicked Pictures',
+                label: '# of clicks',
                 backgroundColor: 'rgb(255, 99, 132)',
                 borderColor: 'rgb(255, 99, 132)',
                 data: clicks,
             },
             {
-                label: 'Picture Views',
+                label: '# of views',
                 backgroundColor: 'rgb(255, 99, 132)',
                 borderColor: 'rgb(255, 99, 132)',
                 data: displays,
