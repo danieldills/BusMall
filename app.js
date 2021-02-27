@@ -5,15 +5,10 @@ const productNames = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubble
 const maxClicks = 26;
 let totalClicks = 1;
 
-// set these at the top for easy/safe use later in script
 const leftImageElem = document.getElementById('left-image');
-// const imageOneCaption = document.getElementById('left-image-caption');
 const centerImageElem = document.getElementById('center-image');
-// const imageTwoCaption = document.getElementById('center-image-caption');
 const rightImageElem = document.getElementById('right-image');
-// const imageThreeCaption = document.getElementById('right-image-caption');
 const allImagesElem = document.getElementById('images');
-// const viewResults = document.getElementById('results');
 
 let leftImageObject = null;
 let centerImageObject = null;
@@ -31,7 +26,7 @@ function Picture(caption, url) {
 
 Picture.all = [];
 
-/* Function */
+/* Functions begin here */
 function createProductsFromScratch() {
     for (let i = 0; i < productNames.length; i++) {
         const productName = productNames[i];
@@ -58,7 +53,6 @@ function createPictureInstances() {
         createProductsFromStorage(storageGet);
     }
 }
-
 
 function pickNewImages() {
 
@@ -155,7 +149,7 @@ function imageClickHandler(event) {
         const JSONPicture = JSON.stringify(Picture.all);
         localStorage.setItem('pictures', JSONPicture);
 
-        const resultsButton = document.getElementById('show-results');
+        const resultsButton = document.getElementById('button');
         resultsButton.addEventListener('click', renderResults);
     }
 }
@@ -171,71 +165,46 @@ function renderResults() {
     }
     renderChart();
 }
-
+/* Chart code */
 function renderChart() {
 
-    const clicks = []
-    const displays = []
+    let displayCounter = [];
+    let clickCounter = [];
+    let imageTitle = [];
 
     for (let i = 0; i < Picture.all.length; i++) {
-        const clickCount = Picture.all[i].clickCtr;
-        const displayCount = Picture.all[i].displayCtr;
-        clicks.push(clickCount);
-        displays.push(displayCount);
-    }
+        const productTally = Picture.all[i].clickCtr;
+        const productViews = Picture.all[i].displayCtr;
+        const productName = Picture.all[i].caption;
 
+        clickCounter.push(productTally);
+        displayCounter.push(productViews);
+        imageTitle.push(productName);
+    }
     const ctx = document.getElementById('canvas').getContext('2d');
     const chart = new Chart(ctx, {
         type: 'horizontalBar',
         data: {
-            labels: productNames,
+            labels: imageTitle,
             datasets: [{
                 label: '# of clicks',
                 backgroundColor: 'rgb(255, 99, 132)',
                 borderColor: 'rgb(255, 99, 132)',
-                data: clicks,
+                data: clickCounter,
             },
             {
                 label: '# of views',
-                backgroundColor: 'rgb(255, 99, 132)',
-                borderColor: 'rgb(255, 99, 132)',
-                data: displays,
-        }]
+                backgroundColor: 'rgb(103, 38, 255)',
+                borderColor: 'rgb(.40, 0.15, 1.00)',
+                data: displayCounter,
+            }]
         },
         options: {}
     });
 }
 
-
 allImagesElem.addEventListener('click', imageClickHandler);
 
 createPictureInstances();
-
 pickNewImages();
-
 renderNewImages();
-
-
-
-
-// // instantiate picture objects
-// new Picture('bag', './imgs/bag.jpg');
-// new Picture('banana', './imgs/banana.jpg');
-// new Picture('bathroom', './imgs/bathroom.jpg');
-// new Picture('boots', './imgs/boots.jpg');
-// new Picture('breakfast', './imgs/breakfast.jpg');
-// new Picture('bublegum', './imgs/bubblegum.jpg');
-// new Picture('chair', './imgs/chair.jpg');
-// new Picture('cthulhu', './imgs/cthulhu.jpg');
-// new Picture('dog-duck', './imgs/dog-duck.jpg');
-// new Picture('dragon', './imgs/dragon.jpg');
-// new Picture('pen', './imgs/pen.jpg');
-// new Picture('pet-sweep', './imgs/pet-sweep.jpg');
-// new Picture('scissors', './imgs/scissors.jpg');
-// new Picture('shark', './imgs/shark.jpg');
-// new Picture('sweep', './imgs/sweep.jpg');
-// new Picture('tauntaun', './imgs/tauntaun.jpg');
-// new Picture('unicorn', './imgs/unicorn.jpg');
-// new Picture('usb', './imgs/usb.jpg');
-// new Picture('water-can', './imgs/water-can.jpg');
-// new Picture('wine-glass', './imgs/wine-glass.jpg');

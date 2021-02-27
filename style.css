@@ -8,16 +8,21 @@ header {
 
 #BusMall {
     text-align: center;
-    font-size: 45px;
+    font-size: 50px;
+    color: whitesmoke;
 }
 
 #select {
     text-align: center;
-    font-size: 30px;
+    font-size: 25px;
+    color: whitesmoke;
 }
 
 #images {
     display: flex;
+    gap: 2rem;
+    padding-left: 10rem;
+    padding-right: 10rem;
 }
 
 img {
@@ -28,4 +33,29 @@ img {
 
 p {
     text-align: center;
+}
+
+#images img {
+    flex: 1;
+    border: 5px rgb(31, 93, 126);
+    border-radius: 10px;
+    min-width: 0;
+    box-shadow: 6px 6px 6px 6px rgba(0, 0, 0, 0.3);
+    border-style: solid;
+}
+
+#results {
+    text-align: center;
+}
+
+#button {
+    padding: 15px 15px 15px 15px;
+    background-color: rgb(112, 163, 226);
+    color: whitesmoke;
+    border-radius: 5px;
+    font-size: 20px;
+}
+
+body {
+    background-color: skyblue;
 }
